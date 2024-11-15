@@ -11,10 +11,10 @@ const Admin = () => {
     const navigate = useNavigate();
     // useEffect(() => {
     //     const token = localStorage.getItem("admintoken");
-    //     if (!token) {
+    //     if (!admintoken) {
     //         navigate('/AdminLogin');
     //     } else {
-    //         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    //         axios.defaults.headers.common['Authorization'] = `Bearer ${admintoken}`;
     //     }
     // }, [navigate]);
 

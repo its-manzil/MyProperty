@@ -13,6 +13,7 @@ import Admin from "./pages/adminpage/Admin";
 // import UserServices from "./pages/userpage/UserServices";
 // import UserNotifications from "./pages/userpage/UserNotifications";
 // import UserHome from "./pages/userpage/UserHome";
+import OfficeDocument from "./pages/officepage/OfficeDocument";
 const rootElement = document.getElementById("root");
 const root = ReactDOM.createRoot(rootElement);
 
@@ -32,6 +33,7 @@ root.render(
         {/* <Route path="/UserServices" element={<UserServices />} /> */}
         {/* <Route path="/UserNotifications" element={<UserNotifications />} /> */}
         {/* <Route path="/UserHome" element={<UserHome />} /> */}
+        <Route path="/OfficeDocument" element={<OfficeDocument />} />
       </Routes>
     </Router>
   </React.StrictMode>
