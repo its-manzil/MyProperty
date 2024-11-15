@@ -62,7 +62,7 @@
   }
   
   /* Responsive menu */
-  @media (max-width: 700px) {
+  @media (max-width: 900px) {
     /* Adjust the hamburger icon for mobile devices */
     .menu-icon {
       position: absolute;
@@ -102,6 +102,7 @@
       z-index: 1200;
     }
   }
+  
   
   /* Ensure page content starts below the fixed navbar */
   body {

@@ -1,71 +1,85 @@
-body {
-    margin: 0;
+.userdocument-container {
+    margin: 20px;
     font-family: Arial, sans-serif;
+  }
+  
+  .toggle-buttons {
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f4f4f9;
+    margin-bottom: 20px;
   }
   
-  .form-container fieldset {
-    border: 2px solid #4a69f1;
-    border-radius: 8px;
-    padding: 20px;
+  .toggle-button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .toggle-button.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .profile-section,
+  .form-section {
     max-width: 500px;
-    width: 90%;
-    background-color: white;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  .form-container legend {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #4a69f1;
+  .profile-section h3 {
+    margin-bottom: 10px;
   }
   
-  form {
+  .profile-buttons button {
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .profile-buttons button:hover {
+    background-color: #1c7e31;
+  }
+  
+  .form-section form {
     display: flex;
     flex-direction: column;
   }
   
-  form label {
+  .form-section label {
     margin: 10px 0 5px;
-    font-size: 1rem;
   }
   
-  form input {
-    padding: 10px;
+  .form-section input {
+    padding: 8px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 1rem;
+    border-radius: 5px;
   }
   
-  form button {
-    margin-top: 20px;
-    padding: 12px;
-    background-color: #4a69f1;
+  .form-section button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
     border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 1rem;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
   }
   
-  form button:hover {
-    background-color: #1556e1;
+  .form-section button:hover {
+    background-color: #0056b3;
   }
   
-  .image-container {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .image-container img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }

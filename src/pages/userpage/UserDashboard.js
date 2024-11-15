@@ -46,22 +46,18 @@ function UserDashboard() {
     setNewDetails({ ...newDetails, [name]: value });
   };
 
-  const handlePasswordChange = async (e) => {
-    e.preventDefault();
+  const handlePasswordChange = async () => {
     try {
       const response = await axios.post(
         "http://localhost:8080/changePassword",
-        {
-          oldPassword,
-          newPassword,
-        },
+        { oldPassword, newPassword },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      setMessage(response.data);
+      setMessage(response.data.message || "Password changed successfully");
       setOldPassword("");
       setNewPassword("");
       setShowPasswordFields(false);
@@ -85,7 +81,7 @@ function UserDashboard() {
           },
         }
       );
-      setMessage(response.data);
+      setMessage(response.data.message || "Details updated successfully");
       setCustomerDetails({ ...customerDetails, ...newDetails });
       setEditDetails(false);
       setTimeout(() => {
@@ -123,122 +119,123 @@ function UserDashboard() {
   return (
     <>
       <Navbar />
-    <div className="dashboard-container">
-      
-      <h1 className="dashboard-title">Welcome to Dashboard</h1>
-      {message && <div className="dashboard-message">{message}</div>}
-      <div className="dashboard-customer-details">
-        <h2>Your Details</h2>
-        {editDetails ? (
-          <form onSubmit={handleDetailSubmit}>
-            <div className="dashboard-detail-item">
-              <label>Name: </label>
-              <input
-                type="text"
-                name="full_name"
-                value={newDetails.full_name}
-                onChange={handleDetailChange}
-              />
-            </div>
-            <div className="dashboard-detail-item">
-              <label>Email: </label>
-              <input
-                type="email"
-                name="email"
-                value={newDetails.email}
-                onChange={handleDetailChange}
-              />
-            </div>
-            <div className="dashboard-detail-item">
-              <label>Phone: </label>
-              <input
-                type="text"
-                name="phone_no"
-                value={newDetails.phone_no}
-                onChange={handleDetailChange}
-              />
-            </div>
-            {showPasswordFields ? (
-              <>
-                <div className="dashboard-detail-item">
-                  <label>Old Password: </label>
-                  <input
-                    type="password"
-                    value={oldPassword}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                  />
-                </div>
-                <div className="dashboard-detail-item">
-                  <label>New Password: </label>
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                  />
-                </div>
+      <div className="dashboard-container">
+        <h1 className="dashboard-title">Welcome to Dashboard</h1>
+        {message && <div className="dashboard-message">{message}</div>}
+        <div className="dashboard-customer-details">
+          <h2>Your Details</h2>
+          {editDetails ? (
+            <form onSubmit={handleDetailSubmit}>
+              <div className="dashboard-detail-item">
+                <label>Name: </label>
+                <input
+                  type="text"
+                  name="full_name"
+                  value={newDetails.full_name}
+                  onChange={handleDetailChange}
+                />
+              </div>
+              <div className="dashboard-detail-item">
+                <label>Email: </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={newDetails.email}
+                  onChange={handleDetailChange}
+                />
+              </div>
+              <div className="dashboard-detail-item">
+                <label>Phone: </label>
+                <input
+                  type="text"
+                  name="phone_no"
+                  value={newDetails.phone_no}
+                  onChange={handleDetailChange}
+                />
+              </div>
+              {showPasswordFields ? (
+                <>
+                  <div className="dashboard-detail-item">
+                    <label>Old Password: </label>
+                    <input
+                      type="password"
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="dashboard-detail-item">
+                    <label>New Password: </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handlePasswordChange}
+                    className="changePassword"
+                  >
+                    Change Password
+                  </button>
+                </>
+              ) : (
                 <button
                   type="button"
-                  onClick={handlePasswordChange}
+                  onClick={() => setShowPasswordFields(true)}
                   className="changePassword"
                 >
                   Change Password
                 </button>
-              </>
-            ) : (
+              )}
+              <div className="dashboard-buttons">
+                <button type="submit">Save</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditDetails(false);
+                    setShowPasswordFields(false);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          ) : (
+            <>
+              <div className="dashboard-detail-item">
+                <span>Name: {customerDetails.full_name}</span>
+              </div>
+              <div className="dashboard-detail-item">
+                <span>Email: {customerDetails.email}</span>
+              </div>
+              <div className="dashboard-detail-item">
+                <span>Phone: {customerDetails.phone_no}</span>
+              </div>
+              <div className="dashboard-detail-item">
+                <span>
+                  Address: {customerDetails.address}, {customerDetails.district}
+                </span>
+              </div>
+              <div className="dashboard-detail-item">
+                <span>Citizenship No.: {customerDetails.citizenship_no}</span>
+              </div>
               <button
-                type="button"
-                onClick={() => setShowPasswordFields(true)}
-                className="changePassword"
+                className="edit-button"
+                onClick={() => setEditDetails(true)}
               >
-                Change Password
+                Edit
               </button>
-            )}
-            <div className="dashboard-buttons">
-              <button type="submit">Save</button>
-              <button
-                type="button"
-                onClick={() => {
-                  setEditDetails(false);
-                  setShowPasswordFields(false);
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        ) : (
-          <>
-            <div className="dashboard-detail-item">
-              <span>Name: {customerDetails.full_name}</span>
-            </div>
-            <div className="dashboard-detail-item">
-              <span>Email: {customerDetails.email}</span>
-            </div>
-            <div className="dashboard-detail-item">
-              <span>Phone: {customerDetails.phone_no}</span>
-            </div>
-            <div className="dashboard-detail-item">
-              <span>address: {customerDetails.address}, {customerDetails.district}</span>
-            </div>
-            <div className="dashboard-detail-item">
-              <span>citizenship No.: {customerDetails.citizenship_no}</span>
-            </div>
-            <button
-              className="edit-button"
-              onClick={() => setEditDetails(true)}
-            >
-              Edit
-            </button>
-          </>
-        )}
+            </>
+          )}
+        </div>
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
+        <button className="delete-account-button" onClick={handleDeleteAccount}>
+          Delete Account
+        </button>
       </div>
-      <button className="logout-button" onClick={handleLogout}>
-        Logout
-      </button>
-      <button className="delete-account-button" onClick={handleDeleteAccount}>
-        Delete Accounts
-      </button>
-    </div>
     </>
   );
 }
