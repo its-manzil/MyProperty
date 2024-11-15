@@ -1,6 +1,5 @@
+import{ BrowserProvider, Contract } from "ethers";
 import React, { useState, useEffect } from "react";
-import {ethers} from "ethers";
-// import{provider} from 'ethers',
 import LandRegistryABI from "./LandRegistryABI.json";
 import "./officedocument.css";
 
@@ -21,12 +20,12 @@ function OfficeDocument() {
   useEffect(() => {
     if (window.ethereum) {
       const initEthers = async () => {
-        const providerInstance = new ethers.providers.Web3Provider(window.ethereum);
+        const providerInstance = new BrowserProvider(window.ethereum);
         await providerInstance.send("eth_requestAccounts", []);
         setProvider(providerInstance);
 
         const signer = providerInstance.getSigner();
-        const contractInstance = new ethers.Contract(contractAddress, LandRegistryABI, signer);
+        const contractInstance = new Contract(contractAddress, LandRegistryABI, signer);
         setContract(contractInstance);
       };
       initEthers();
@@ -46,6 +45,7 @@ function OfficeDocument() {
     const { landNumber, landmark, area, landType, ownerName, citizenshipNo } = form;
     try {
       const tx = await contract.createLandRecord(landNumber, landmark, area, landType, ownerName, citizenshipNo);
+      console.log("details: "+tx)
       await tx.wait();
       alert("Land record added successfully!");
     } catch (error) {
