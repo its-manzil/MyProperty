@@ -6,7 +6,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Home from "./pages/Home";
 // import UserLogin from "./pages/userpage/UserLogin";
-// import UserDashboard from "./pages/userpage/UserDashboard";
+import UserDashboard from "./pages/userpage/UserDashboard";
 // import UserDocuments from "./pages/userpage/UserDocuments";
 import Admin from "./pages/adminpage/Admin";
 // import AdminLogin from "./pages/adminpage/AdminLogin";
@@ -26,7 +26,7 @@ root.render(
       <Route path="/" element={<Home />} />
         <Route path="/Home" element={<Home />} />
         {/* <Route path="/UserLogin" element={<UserLogin />} /> */}
-        {/* <Route path="/UserDashboard" element={<UserDashboard />} /> */}
+        <Route path="/UserDashboard" element={<UserDashboard />} />
         {/* <Route path="/UserDocuments" element={<UserDocuments />} /> */}
         <Route path="/Admin" element={<Admin />} />
         {/* <Route path="/AdminLogin" element={<AdminLogin />} /> */}
