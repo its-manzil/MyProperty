@@ -9,14 +9,6 @@ const Admin = () => {
     const [users, setUsers] = useState([]);
     const [showOfficerForm, setShowOfficerForm] = useState(false);
     const navigate = useNavigate();
-    useEffect(() => {
-        const admintoken = localStorage.getItem("admintoken");
-        if (!admintoken) {
-            navigate('/AdminLogin');
-        } else {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${admintoken}`;
-        }
-    }, [navigate]);
 
     const [newOfficer, setNewOfficer] = useState({
         office_name: '',
@@ -28,27 +20,40 @@ const Admin = () => {
         password_hash: '',
     });
 
-    const [password, setPassword] = useState({ old: '', new: '', confirm: '' });
-    const handlePasswordChange = async (event) => {
-        event.preventDefault();
-        if (password.new !== password.confirm) {
-            alert("New password and confirmation do not match.");
-            return;
-        }
+    const [password, setPassword] = useState({ new: '', confirm: '' });
 
-        try {
-            await axios.post(
-                'http://localhost:8080/changePassword',
-                { oldPassword: password.old, newPassword: password.new },
-                { headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` } }
-            );
-            alert("Password changed successfully!");
-            setPassword({ old: '', new: '', confirm: '' });
-        } catch (error) {
-            alert("Error changing password. Please ensure the old password is correct.");
-        }
-    };
+const handlePasswordChange = async (event) => {
+    event.preventDefault();
 
+    if (!password.new || !password.confirm) {
+        alert("Please fill in both password fields.");
+        return;
+    }
+
+    if (password.new !== password.confirm) {
+        alert("New password and confirmation do not match.");
+        return;
+    }
+
+    try {
+        const response = await axios.post(
+            'http://localhost:8080/changeAdminPassword',
+            { newPassword: password.new },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("adminToken")}`
+                }
+            }
+        );
+        alert(response.data || "Password changed successfully!");
+        setPassword({ new: '', confirm: '' }); // Clear form after success
+    } catch (error) {
+        console.error("Error changing password:", error);
+        const errorMessage =
+            error.response?.data || "An error occurred. Please try again.";
+        alert(errorMessage);
+    }
+};
 
     useEffect(() => {
         fetchOfficers();
@@ -95,7 +100,7 @@ const Admin = () => {
         });
         if (response.ok) {
             alert('Officer added successfully');
-            fetchOfficers();  // Fetch updated list of officers
+            fetchOfficers(); // Fetch updated list of officers
             setShowOfficerForm(false);
         } else {
             alert('Error adding officer');
@@ -224,11 +229,23 @@ const Admin = () => {
                     <div className="settings-panel">
                         <h2>Change Password</h2>
                         <form onSubmit={handlePasswordChange}>
-                            <input type="password" placeholder="Old Password" required onChange={(e) => setPassword({ ...password, old: e.target.value })} />
-                            <input type="password" placeholder="New Password" required onChange={(e) => setPassword({ ...password, new: e.target.value })} />
-                            <input type="password" placeholder="Confirm New Password" required onChange={(e) => setPassword({ ...password, confirm: e.target.value })} />
-                            <button type="submit">Submit</button>
-                        </form>
+    <input
+        type="password"
+        placeholder="New Password"
+        required
+        value={password.new}
+        onChange={(e) => setPassword({ ...password, new: e.target.value })}
+    />
+    <input
+        type="password"
+        placeholder="Confirm New Password"
+        required
+        value={password.confirm}
+        onChange={(e) => setPassword({ ...password, confirm: e.target.value })}
+    />
+    <button type="submit">Submit</button>
+</form>
+
                     </div>
                 )}
             </div>

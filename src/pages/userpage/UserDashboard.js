@@ -236,7 +236,7 @@ function UserDashboard() {
         Logout
       </button>
       <button className="delete-account-button" onClick={handleDeleteAccount}>
-        Delete Account
+        Delete Accounts
       </button>
     </div>
     </>
