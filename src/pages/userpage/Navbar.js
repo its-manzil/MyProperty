@@ -17,7 +17,7 @@ function Navbar() {
       </div>
       <ul className={`nav-links ${isOpen ? "open" : ""}`}>
         <li><a href="./UserHome">Home</a></li>
-        <li><a href="./UserDocuments">Documents</a></li>
+        <li><a href="./UserDocument">Documents</a></li>
         <li><a href="./UserNotifications">Notification</a></li>
         <li><a href="./UserServices">Services</a></li>
         <li><a href="./UserLogin">Profile</a></li>

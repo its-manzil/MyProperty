@@ -9,14 +9,14 @@ const Admin = () => {
     const [users, setUsers] = useState([]);
     const [showOfficerForm, setShowOfficerForm] = useState(false);
     const navigate = useNavigate();
-    // useEffect(() => {
-    //     const token = localStorage.getItem("admintoken");
-    //     if (!admintoken) {
-    //         navigate('/AdminLogin');
-    //     } else {
-    //         axios.defaults.headers.common['Authorization'] = `Bearer ${admintoken}`;
-    //     }
-    // }, [navigate]);
+    useEffect(() => {
+        const admintoken = localStorage.getItem("admintoken");
+        if (!admintoken) {
+            navigate('/AdminLogin');
+        } else {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${admintoken}`;
+        }
+    }, [navigate]);
 
     const [newOfficer, setNewOfficer] = useState({
         office_name: '',
