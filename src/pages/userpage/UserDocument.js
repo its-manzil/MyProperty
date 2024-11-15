@@ -1,11 +1,10 @@
 import React, { useState } from "react";
+import Navbar from "./Navbar";
 import "./userdocument.css";
 
 const UserDocument = () => {
   const [formValues, setFormValues] = useState({
-    currentOwner: "",
-    citznno: "",
-    currentAddress: "",
+    
     newOwner: "",
     newCitznno: "",
     newAddress: "",
@@ -35,9 +34,7 @@ const UserDocument = () => {
 
     console.log("Form Submitted Successfully", formValues);
     setFormValues({
-      currentOwner: "",
-      citznno: "",
-      currentAddress: "",
+      
       newOwner: "",
       newCitznno: "",
       newAddress: "",
@@ -49,43 +46,13 @@ const UserDocument = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="form-container">
       <fieldset>
         <legend>Transfer Property</legend>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="currentOwner">Current Owner:</label>
-          <input
-            type="text"
-            id="currentOwner"
-            name="currentOwner"
-            value={formValues.currentOwner}
-            onChange={handleChange}
-            required
-            pattern="[A-Za-z\s]+"
-          />
-
-          <label htmlFor="citznno">Current Owner Citizenship no:</label>
-          <input
-            type="text"
-            id="citznno"
-            name="citznno"
-            value={formValues.citznno}
-            onChange={handleChange}
-            required
-            pattern="\d+"
-            title="Only numbers allowed"
-          />
-
-          <label htmlFor="currentAddress">Address:</label>
-          <input
-            type="text"
-            id="currentAddress"
-            name="currentAddress"
-            value={formValues.currentAddress}
-            onChange={handleChange}
-            required
-            pattern="[A-Za-z\s]+"
-          />
+          
 
           <label htmlFor="newOwner">Buyer Name:</label>
           <input
@@ -179,6 +146,7 @@ const UserDocument = () => {
         </form>
       </fieldset>
     </div>
+    </>
   );
 };
 
