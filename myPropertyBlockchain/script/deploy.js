@@ -1,11 +1,14 @@
 const { ethers } = require("hardhat");
 
 async function main() {
-  console.log("Deploying LandRegistry contract...");
-
+    const [deployer] = await ethers.getSigners();
+    console.log("Deploying contracts with the account:", deployer.address);
+  // const landRegistry = await ethers.getContractFactory("LandRegistry");
   const LandRegistry = await ethers.getContractFactory("LandRegistry");
   const landRegistry = await LandRegistry.deploy();  
-  console.log("Contract details:", landRegistry);
+  // await landRegistry.deploy();  
+  
+  // console.log("Contract details:", landRegistry);
 
 
   

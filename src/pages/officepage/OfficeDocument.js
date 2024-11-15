@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
-import LandRegistryABI from "./LandRegistryABI.json"; // The ABI JSON file
+import {ethers} from "ethers";
+// import{provider} from 'ethers',
+import LandRegistryABI from "./LandRegistryABI.json";
 import "./officedocument.css";
 
 function OfficeDocument() {
@@ -15,7 +16,7 @@ function OfficeDocument() {
 
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
-  const contractAddress = "";
+  const contractAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // Ensure no whitespace
 
   useEffect(() => {
     if (window.ethereum) {
