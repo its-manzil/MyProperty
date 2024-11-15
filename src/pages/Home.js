@@ -1,7 +1,7 @@
 import React from 'react';
+import './home.css';
 
-
-const Home = () => {
+function Home(){
     return (
         <div>
             {/* Banner Section */}
