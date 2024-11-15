@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Home from "./pages/Home";
-// import UserLogin from "./pages/userpage/UserLogin";
+import UserLogin from "./pages/userpage/UserLogin";
 import UserDashboard from "./pages/userpage/UserDashboard";
 // import UserDocuments from "./pages/userpage/UserDocuments";
 import Admin from "./pages/adminpage/Admin";
@@ -25,7 +25,7 @@ root.render(
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/Home" element={<Home />} />
-        {/* <Route path="/UserLogin" element={<UserLogin />} /> */}
+        <Route path="/UserLogin" element={<UserLogin />} />
         <Route path="/UserDashboard" element={<UserDashboard />} />
         {/* <Route path="/UserDocuments" element={<UserDocuments />} /> */}
         <Route path="/Admin" element={<Admin />} />
