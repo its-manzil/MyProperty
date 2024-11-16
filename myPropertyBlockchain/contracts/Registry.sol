@@ -71,4 +71,11 @@ contract Registry {
         );
         nextLandId++;
     }
+   function getLandDetails(uint256 landId) public view returns (Land memory) {
+    return lands[landId];
+}
+// function getLandDetails(uint256 landId) public view returns (string memory landmark, uint256 area, string memory landType) {
+//     Land memory land = lands[landId];
+//     return (land.landmark, land.area, land.landType);
+// }
 }
