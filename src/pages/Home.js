@@ -10,7 +10,7 @@ function Home(){
                     <h1>Government Services in a Single App</h1>
                     <p>Explore all digital services provided by the government.</p>
                     <div className="select">
-                        <h2><i>Choose your role</i></h2>
+                        <h2><i>Choose your role:</i></h2>
                         <button><a href="./UserLogin">Landlord</a></button>
                         <button><a href="./OfficeLogin">Office</a></button>
                     </div>
