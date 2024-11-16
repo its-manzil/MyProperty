@@ -1,5 +1,5 @@
 [
-{
+  {
     "inputs": [
       {
         "internalType": "string",
@@ -88,6 +88,67 @@
         "internalType": "struct LandRegistry.LandRecord",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_ownerName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_citizenshipNo",
+        "type": "string"
+      }
+    ],
+    "name": "getLandRecordsByOwner",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "landId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "landNumber",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "landmark",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "area",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "landType",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "ownerName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "citizenshipNo",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct LandRegistry.LandRecord[]",
+        "name": "",
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
