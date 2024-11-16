@@ -18,7 +18,7 @@ const UserAboutUs = () => {
       <h1>About Us</h1>
       <div className="about-content">
         <p>
-          Our Land Transfer System ensures efficiency and security for users,
+          My Property System ensures efficiency and security for users,
           offering the convenience of 24/7 accessibility. Customers can
           initiate and manage property transfers, verify ownership details, and
           access related documentation anytime, eliminating the need for
@@ -70,7 +70,7 @@ const UserAboutUs = () => {
       </div>
       
     </div>
-    <footer>©️ 2024 Our Online System | All Rights Reserved</footer>
+    <footer>©️ 2024 My Property | All Rights Reserved</footer>
     </>
   );
 };
