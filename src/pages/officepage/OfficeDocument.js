@@ -2,6 +2,7 @@ import { BrowserProvider, Contract } from "ethers";
 import React, { useState, useEffect } from "react";
 import LandRegistryABI from "./LandRegistryABI.json";
 import "./officedocument.css";
+import OfficeNav from "./OfficeNav";
 
 function OfficeDocument() {
   const [form, setForm] = useState({
@@ -54,6 +55,8 @@ function OfficeDocument() {
   };
 
   return (
+    <>
+    <OfficeNav />
     <div>
       <button className="add-button" onClick={() => window.ethereum.enable()}>
         Connect Wallet
@@ -125,6 +128,7 @@ function OfficeDocument() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 

@@ -12,7 +12,7 @@ function Home(){
                     <div className="select">
                         <h2><i>Choose your role</i></h2>
                         <button><a href="./UserLogin">Landlord</a></button>
-                        <button>officer</button>
+                        <button><a href="./OfficeLogin">Landlord</a></button>
                     </div>
                 </div>
                 <div className="banner-graphics">
