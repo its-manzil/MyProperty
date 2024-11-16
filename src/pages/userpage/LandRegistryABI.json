@@ -1,0 +1,158 @@
+[
+{
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_landNumber",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_landmark",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_area",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_landType",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_ownerName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_citizenshipNo",
+        "type": "string"
+      }
+    ],
+    "name": "createLandRecord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_landId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getLandRecord",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "landId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "landNumber",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "landmark",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "area",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "landType",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "ownerName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "citizenshipNo",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct LandRegistry.LandRecord",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "landRecords",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "landId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "landNumber",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "landmark",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "area",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "landType",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "ownerName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "citizenshipNo",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "recordCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
