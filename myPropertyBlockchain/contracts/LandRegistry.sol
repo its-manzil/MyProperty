@@ -2,69 +2,114 @@
 pragma solidity ^0.8.0;
 
 contract LandRegistry {
-    struct LandRecord {
+    struct Land {
         uint256 landId;
-        string landNumber;
-        string landmark;
-        uint256 area;
+        string landLocation;
+        uint256 landArea;
         string landType;
-        string ownerName;
-        string citizenshipNo;
+        address currentOwner;
+        bool isVerified;
+        bool isTransferred;
     }
 
-    mapping(uint256 => LandRecord) public landRecords;
-    uint256 public recordCount;
-
-    event LandRecordCreated(uint256 landId, string landNumber, string ownerName, string citizenshipNo);
-
-    // Create a new land record
-    function createLandRecord(
-        string memory _landNumber,
-        string memory _landmark,
-        uint256 _area,
-        string memory _landType,
-        string memory _ownerName,
-        string memory _citizenshipNo
-    ) public {
-        recordCount++;
-        landRecords[recordCount] = LandRecord(recordCount, _landNumber, _landmark, _area, _landType, _ownerName, _citizenshipNo);
-        emit LandRecordCreated(recordCount, _landNumber, _ownerName, _citizenshipNo);
+    struct TransferRequest {
+        uint256 landId;
+        address newOwner;
+        bool isPending;
+        bool isApproved;
     }
 
-    // Retrieve a single land record by landId
-    function getLandRecord(uint256 _landId) public view returns (LandRecord memory) {
-        require(_landId > 0 && _landId <= recordCount, "Invalid land ID");
-        return landRecords[_landId];
+    address public officer;
+    uint256 public nextLandId = 1;
+    mapping(uint256 => Land) public lands;
+    mapping(uint256 => TransferRequest) public transferRequests;
+
+    event LandRegistered(uint256 landId, address owner, string landLocation);
+    event TransferRequested(uint256 landId, address requestedBy, address newOwner);
+    event TransferApproved(uint256 landId, address newOwner);
+    event LandVerified(uint256 landId, address verifiedBy);
+
+    modifier onlyOfficer() {
+        require(msg.sender == officer, "Only officer can perform this action");
+        _;
     }
 
-    // Retrieve all land records for a specific owner
-    function getLandRecordsByOwner(string memory _ownerName, string memory _citizenshipNo) public view returns (LandRecord[] memory) {
-        uint256 count = 0;
+    modifier onlyOwner(uint256 landId) {
+        require(lands[landId].currentOwner == msg.sender, "Only current owner can initiate transfer");
+        _;
+    }
 
-        // First, count how many records match the owner
-        for (uint256 i = 1; i <= recordCount; i++) {
-            if (
-                keccak256(abi.encodePacked(landRecords[i].ownerName)) == keccak256(abi.encodePacked(_ownerName)) &&
-                keccak256(abi.encodePacked(landRecords[i].citizenshipNo)) == keccak256(abi.encodePacked(_citizenshipNo))
-            ) {
-                count++;
-            }
-        }
+    constructor() {
+        officer = msg.sender;
+    }
 
-        // Create an array with the exact count of matching records
-        LandRecord[] memory records = new LandRecord[](count);
-        uint256 index = 0;
+    function registerLand(string memory _landLocation, uint256 _landArea, string memory _landType) public {
+        lands[nextLandId] = Land({
+            landId: nextLandId,
+            landLocation: _landLocation,
+            landArea: _landArea,
+            landType: _landType,
+            currentOwner: msg.sender,
+            isVerified: false,
+            isTransferred: false
+        });
+        emit LandRegistered(nextLandId, msg.sender, _landLocation);
+        nextLandId++;
+    }
 
-        for (uint256 i = 1; i <= recordCount; i++) {
-            if (
-                keccak256(abi.encodePacked(landRecords[i].ownerName)) == keccak256(abi.encodePacked(_ownerName)) &&
-                keccak256(abi.encodePacked(landRecords[i].citizenshipNo)) == keccak256(abi.encodePacked(_citizenshipNo))
-            ) {
-                records[index] = landRecords[i];
-                index++;
-            }
-        }
+    function requestTransfer(uint256 landId, address newOwner) public onlyOwner(landId) {
+        require(lands[landId].isVerified, "Land must be verified before transfer");
+        require(!transferRequests[landId].isPending, "Transfer request already pending");
 
-        return records;
+        transferRequests[landId] = TransferRequest({
+            landId: landId,
+            newOwner: newOwner,
+            isPending: true,
+            isApproved: false
+        });
+
+        emit TransferRequested(landId, msg.sender, newOwner);
+    }
+
+    function approveTransfer(uint256 landId) public onlyOfficer {
+        TransferRequest storage request = transferRequests[landId];
+        require(request.isPending, "No pending transfer request");
+        require(!request.isApproved, "Transfer already approved");
+
+        lands[landId].currentOwner = request.newOwner;
+        lands[landId].isTransferred = true;
+        request.isPending = false;
+        request.isApproved = true;
+
+        emit TransferApproved(landId, request.newOwner);
+    }
+
+    function verifyAndSaveLand(
+        address buyer,
+        uint256 landId,
+        string memory location
+    ) public onlyOfficer {
+        Land storage land = lands[landId];
+        require(!land.isVerified, "Land already verified");
+        require(land.currentOwner == buyer, "Only the owner can verify");
+
+        land.isVerified = true;
+
+        emit LandVerified(landId, msg.sender);
+    }
+
+    function verifyLand(uint256 landId) public onlyOfficer {
+        Land storage land = lands[landId];
+        require(!land.isVerified, "Land is already verified");
+
+        land.isVerified = true;
+    }
+
+    function getLandDetails(uint256 landId) public view returns (Land memory) {
+        return lands[landId];
+    }
+
+    function getTransferRequestDetails(uint256 landId) public view returns (TransferRequest memory) {
+        return transferRequests[landId];
     }
 }

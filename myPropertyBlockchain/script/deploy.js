@@ -7,8 +7,10 @@ async function main() {
   const LandRegistry = await ethers.getContractFactory("LandRegistry");
   const landRegistry = await LandRegistry.deploy();  
   // await landRegistry.deploy();  
-  
-  // console.log("Contract details:", landRegistry);
+  // await LandRegistry.deploy({
+  //   gasLimit: 3000000  
+  // });
+  // // console.log("Contract details:", landRegistry);
 
 
   

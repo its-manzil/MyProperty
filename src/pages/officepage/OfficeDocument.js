@@ -51,7 +51,7 @@ function OfficeDocument() {
 
     const { landNumber, landmark, area, landType, ownerName, citizenshipNo } = form;
     try {
-      const tx = await contract.createLandRecord(landNumber, landmark, area, landType, ownerName, citizenshipNo);
+      const tx = await contract.registerLand(landNumber, landmark, area, landType, ownerName, citizenshipNo);
       console.log("Transaction details:", tx);
       await tx.wait();
       alert("Land record added successfully!");
