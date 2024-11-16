@@ -11,6 +11,14 @@ const Admin = () => {
     const [showOfficerForm, setShowOfficerForm] = useState(false);
     const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem("admintoken");
+    if (!token) {
+      navigate("/AdminLogin");
+      return;
+    }
+  }, [navigate]);
+
     const [newOfficer, setNewOfficer] = useState({
         office_name: '',
         office_department: '',
@@ -26,8 +34,8 @@ const Admin = () => {
     const handlePasswordChange = async (event) => {
         event.preventDefault();
 
-        if (!password.new || !password.confirm) {
-            alert("Please fill in both password fields.");
+        if (!password.old || !password.new || !password.confirm) {
+            alert("Please fill in all password fields.");
             return;
         }
 
@@ -39,15 +47,15 @@ const Admin = () => {
         try {
             const response = await axios.post(
                 'http://localhost:8080/changeAdminPassword',
-                { newPassword: password.new },
+                { oldPassword: password.old, newPassword: password.new },
                 {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+                        Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
                     },
                 }
             );
             alert(response.data || "Password changed successfully!");
-            setPassword({ new: '', confirm: '' }); // Clear form after success
+            setPassword({ old: '', new: '', confirm: '' }); // Clear the form after success
         } catch (error) {
             console.error("Error changing password:", error);
             const errorMessage =
@@ -125,7 +133,7 @@ const Admin = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("adminToken");
+        localStorage.removeItem("admintoken");
         delete axios.defaults.headers.common['Authorization'];
         navigate('/AdminLogin');
     };
@@ -242,23 +250,36 @@ const Admin = () => {
                     </div>
                 )}
 
-                {activeSection === 'settings' && (
+{activeSection === 'settings' && (
                     <div className="settings-panel">
                         <h2>Change Password</h2>
                         <form onSubmit={handlePasswordChange}>
                             <input
                                 type="password"
-                                placeholder="New Password"
+                                placeholder="Old Password"
                                 required
-                                value={password.new}
-                                onChange={(e) => setPassword({ ...password, new: e.target.value })}
+                                value={password.old}
+                                onChange={(e) =>
+                                    setPassword({ ...password, old: e.target.value })
+                                }
                             />
                             <input
                                 type="password"
-                                placeholder="Confirm Password"
+                                placeholder="New Password"
+                                required
+                                value={password.new}
+                                onChange={(e) =>
+                                    setPassword({ ...password, new: e.target.value })
+                                }
+                            />
+                            <input
+                                type="password"
+                                placeholder="Confirm New Password"
                                 required
                                 value={password.confirm}
-                                onChange={(e) => setPassword({ ...password, confirm: e.target.value })}
+                                onChange={(e) =>
+                                    setPassword({ ...password, confirm: e.target.value })
+                                }
                             />
                             <button type="submit">Change Password</button>
                         </form>

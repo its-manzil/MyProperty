@@ -1,129 +1,126 @@
-/* General body styling */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f7f7f9;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  background-color: #f4f4f4;
 }
 
-/* Main container styling */
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+.hidden {
+  display: none;
 }
 
-/* Centered div styling */
-.centered-div {
-  width: 90%;
-  max-width: 400px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  box-sizing: border-box;
+.unique-centered-div {
   position: relative;
+  width: 600px;
+  height: 300px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: 100px;
 }
 
-/* Title styling */
-.details-container h2 {
-  font-size: 20px;
+.unique-details-container h3 {
+  margin: 5px 0;
+  font-size: 16px;
+  font-weight: normal;
   color: #333;
-  margin: 0;
-  text-align: center;
 }
 
-/* Land record details styling */
-.details-container p {
-  font-size: 14px;
-  color: #666;
-  margin: 8px 0;
-  line-height: 1.5;
+.bold h3 {
+  font-weight: bold;
 }
 
-/* Button container styling */
-.button-container {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
+.unique-button-container {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }
 
-/* Button styling */
-.button-container button {
-  background-color: #007bff;
-  color: #ffffff;
-  font-size: 14px;
-  padding: 10px 20px;
+.unique-buy-button,
+.unique-sell-button {
+  padding: 8px 12px;
+  font-size: 30px;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
-.button-container button:hover {
+.unique-buy-button {
+  background-color: #007bff;
+}
+
+.unique-buy-button:hover {
   background-color: #0056b3;
 }
 
-/* Buy and Sell form styling */
-.form {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-}
-
-.form input {
-  font-size: 14px;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.form input:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-/* Submit button styling */
-.submit-button {
+.unique-sell-button {
   background-color: #28a745;
-  color: #ffffff;
-  font-size: 14px;
+}
+
+.unique-sell-button:hover {
+  background-color: #1c7e31;
+}
+
+fieldset {
+  border: 2px solid #4a69f1;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 600px;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+legend {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #4a69f1;
+}
+
+form label {
+  margin: 1px;
+  font-size: 1rem;
+}
+
+form input {
   padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+form button {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #4a69f1;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.submit-button:hover {
-  background-color: #218838;
+form button:hover {
+  background-color: #1556e1;
 }
 
-/* Responsive styling */
-@media (max-width: 480px) {
-  .centered-div {
-      width: 90%;
-      padding: 15px;
-  }
+.unique-image-container img {
+  max-width: 20%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-  .details-container h2 {
-      font-size: 18px;
-  }
-
-  .button-container button,
-  .submit-button {
-      font-size: 12px;
-      padding: 8px 16px;
-  }
-
-  .form input {
-      font-size: 12px;
-  }
+.unique-button-group {
+  display: flex;
+  justify-content: space-between;
 }

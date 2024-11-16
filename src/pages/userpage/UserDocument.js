@@ -1,191 +1,193 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { BrowserProvider, Contract } from "ethers";
-import LandRegistryABI from "./LandRegistryABI.json";
-import axios from "axios";
-import "./userdocument.css"; 
+import "./userdocument.css";
 
-const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
+const UserDocument = () => {
+  const [currentSection, setCurrentSection] = useState("home");
 
-function UserDocument() {
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState({ ownerName: "", citizenshipNo: "" });
-  const [landRecords, setLandRecords] = useState([]);
-  const [contract, setContract] = useState(null);
-  const [showBuyForm, setShowBuyForm] = useState(false);
-  const [showSellForm, setShowSellForm] = useState(false);
-  const [formData, setFormData] = useState({ buyerName: "", buyerCitizenship: "", landNumber: "", price: "" });
+  const profileData = {
+    landLocation: "Kathmandu, Nepal",
+    landArea: "500 sq.ft.",
+    landType: "Residential",
+  };
 
-  // Check if user is logged in
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/UserLogin");
-      return;
+    const detailsContainer = document.querySelector(".details-container-bold");
+    if (detailsContainer) {
+      detailsContainer.innerHTML = `
+        <h3>Land Location: ${profileData.landLocation}</h3>
+        <h3>Land Area: ${profileData.landArea}</h3>
+        <h3>Land Type: ${profileData.landType}</h3>
+      `;
     }
-  }, [navigate]);
-
-  // Initialize contract and fetch user data
-  useEffect(() => {
-    const initContract = async () => {
-      if (window.ethereum) {
-        const providerInstance = new BrowserProvider(window.ethereum);
-        await providerInstance.send("eth_requestAccounts", []);
-        const signer = await providerInstance.getSigner();
-        const contractInstance = new Contract(contractAddress, LandRegistryABI, signer);
-        setContract(contractInstance);
-      } else {
-        alert("Please install MetaMask to use this feature!");
-      }
-    };
-
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get("/api/user-details");
-        const { ownerName, citizenshipNo } = response.data;
-        setUserData({ ownerName, citizenshipNo });
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    initContract().then(fetchUserData);
   }, []);
 
-  // Fetch land records
-  useEffect(() => {
-    if (contract && userData.ownerName && userData.citizenshipNo) {
-      fetchLandRecords();
-    }
-  }, [contract, userData]);
-
-  const fetchLandRecords = async () => {
-    try {
-      const records = await contract.getLandRecordsByOwner(userData.ownerName, userData.citizenshipNo);
-      setLandRecords(records);
-    } catch (error) {
-      console.error("Error fetching land records:", error);
-    }
+  const handleSectionChange = (sectionId) => {
+    setCurrentSection(sectionId);
   };
 
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  // Handle buy action
-  const handleBuy = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    try {
-      await contract.buyLand(formData.buyerName, formData.buyerCitizenship, formData.landNumber, formData.price);
-      alert("Land bought successfully!");
-      setShowBuyForm(false);
-      fetchLandRecords();
-    } catch (error) {
-      console.error("Error buying land:", error);
-    }
+    alert("Form submitted successfully!");
+    e.target.reset();
   };
 
-  // Handle sell action
-  const handleSell = async (e) => {
-    e.preventDefault();
-    try {
-      await contract.sellLand(formData.landNumber, formData.price);
-      alert("Land sold successfully!");
-      setShowSellForm(false);
-      fetchLandRecords();
-    } catch (error) {
-      console.error("Error selling land:", error);
-    }
+  const handleCancel = () => {
+    setCurrentSection("home");
   };
 
   return (
-    <div className="container">
-      <div className="centered-div">
-        <div className="details-container">
-          <h2>Land Records for {userData.ownerName}</h2>
-          {landRecords.length > 0 ? (
-            landRecords.map((record, index) => (
-              <div key={index}>
-                <p>Land Number: {record.landNumber}</p>
-                <p>Landmark: {record.landmark}</p>
-                <p>Area: {record.area}</p>
-                <p>Type: {record.landType}</p>
+    <div className="app-container">
+      <button
+        className="unique-buy-button"
+        onClick={() => handleSectionChange("buy")}
+      >
+        Buy
+      </button>
+      {currentSection === "home" && (
+        <div className="unique-centered-div">
+          <div className="details-container details-container-bold">
+            <h3>Loading profile...</h3>
+          </div>
+          <div className="unique-button-container">
+            <button
+              className="unique-sell-button"
+              onClick={() => handleSectionChange("buy")}
+            >
+              Sell
+            </button>
+          </div>
+        </div>
+      )}
+      {currentSection === "buy" && (
+        <div className="unique-buy-section">
+          <fieldset className="unique-fieldset">
+            <legend>Transfer Property</legend>
+            <form id="transferForm" onSubmit={handleFormSubmit}>
+              <div className="form-row">
+                <label htmlFor="currentOwner">Current Owner:</label>
+                <input
+                  type="text"
+                  id="currentOwner"
+                  name="currentOwner"
+                  required
+                  pattern="[A-Za-z\\s]+"
+                />
               </div>
-            ))
-          ) : (
-            <p>No land records found.</p>
-          )}
+              <div className="form-row">
+                <label htmlFor="citznno">Current Owner Citizenship no:</label>
+                <input
+                  type="text"
+                  id="citznno"
+                  name="citznno"
+                  required
+                  pattern="\\d+"
+                  title="Only numbers allowed"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="currentAddress">Address:</label>
+                <input
+                  type="text"
+                  id="currentAddress"
+                  name="currentAddress"
+                  required
+                  pattern="[A-Za-z\\s]+"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="newOwner">Buyer Name:</label>
+                <input
+                  type="text"
+                  id="newOwner"
+                  name="newOwner"
+                  required
+                  pattern="[A-Za-z\\s]+"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="newCitznno">Buyer Citizenship no:</label>
+                <input
+                  type="text"
+                  id="newCitznno"
+                  name="newCitznno"
+                  required
+                  pattern="\\d+"
+                  title="Only numbers allowed"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="newAddress">Address:</label>
+                <input
+                  type="text"
+                  id="newAddress"
+                  name="newAddress"
+                  required
+                  pattern="[A-Za-z\\s]+"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="landno">Land no:</label>
+                <input
+                  type="text"
+                  id="landno"
+                  name="landno"
+                  required
+                  pattern="\\d+"
+                  title="Only numbers allowed"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="landarea">Land Area:</label>
+                <input
+                  type="text"
+                  id="landarea"
+                  name="landarea"
+                  required
+                  pattern="\\d+"
+                  title="Only numbers allowed"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="taxclearance">
+                  Tax Clearance Invoice Number:
+                </label>
+                <input
+                  type="text"
+                  id="taxclearance"
+                  name="taxclearance"
+                  required
+                  pattern="\\d+"
+                  title="Only numbers allowed"
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="location">Land Location:</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  required
+                  pattern="[A-Za-z\\s]+"
+                />
+              </div>
+              <div className="unique-image-container">
+                <img
+                  src="https://www.forbes.com/advisor/wp-content/uploads/2021/03/ethereum-1.jpeg"
+                  alt="Property Image"
+                />
+              </div>
+              <div className="form-buttons">
+                <button type="submit">Transfer</button>
+                <button type="button" onClick={handleCancel}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </fieldset>
         </div>
-
-        <div className="button-container">
-          <button onClick={() => setShowBuyForm(!showBuyForm)}>Buy</button>
-          <button onClick={() => setShowSellForm(!showSellForm)}>Sell</button>
-        </div>
-
-        {showBuyForm && (
-          <form className="form" onSubmit={handleBuy}>
-            <input
-              type="text"
-              name="buyerName"
-              placeholder="Buyer Name"
-              value={formData.buyerName}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="text"
-              name="buyerCitizenship"
-              placeholder="Buyer Citizenship No"
-              value={formData.buyerCitizenship}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="text"
-              name="landNumber"
-              placeholder="Land Number"
-              value={formData.landNumber}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="number"
-              name="price"
-              placeholder="Price"
-              value={formData.price}
-              onChange={handleInputChange}
-              required
-            />
-            <button type="submit" className="submit-button">Confirm Buy</button>
-          </form>
-        )}
-
-        {showSellForm && (
-          <form className="form" onSubmit={handleSell}>
-            <input
-              type="text"
-              name="landNumber"
-              placeholder="Land Number"
-              value={formData.landNumber}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="number"
-              name="price"
-              placeholder="Price"
-              value={formData.price}
-              onChange={handleInputChange}
-              required
-            />
-            <button type="submit" className="submit-button">Confirm Sell</button>
-          </form>
-        )}
-      </div>
+      )}
     </div>
   );
-}
+};
 
 export default UserDocument;
