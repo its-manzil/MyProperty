@@ -18,6 +18,8 @@ import OfficeAboutUs from "./pages/officepage/OfficeAboutUs";
 import UserAboutUs from "./pages/userpage/UserAboutUs";
 import OfficeContactUs from "./pages/officepage/OfficeContactUs";
 import UserContactUs from "./pages/userpage/UserContactUs";
+import UserHome from "./pages/userpage/UserHome";
+import OfficeNotify from "./pages/officepage/OfficeNotify";
 
 const rootElement = document.getElementById("root");
 const root = ReactDOM.createRoot(rootElement);
@@ -47,6 +49,8 @@ root.render(
         <Route path="/UserAboutUs" element={<UserAboutUs />} />
         <Route path="/OfficeContactUs" element={<OfficeContactUs />} />
         <Route path="/UserContactUs" element={<UserContactUs />} />
+        <Route path="/UserHome" element={<UserHome />} />
+        <Route path="/OfficeNotify" element={<OfficeNotify />} />
         {/* Example of a splat route */}
         <Route path="/catch-all/*" element={<div>Catch-All Route</div>} />
       </Routes>

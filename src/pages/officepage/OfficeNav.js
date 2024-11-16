@@ -18,7 +18,7 @@ function OfficeNav() {
       <ul className={`nav-links ${isOpen ? "open" : ""}`}>
         <li><a href="./OfficeHome">Home</a></li>
         <li><a href="./OfficeDocument">Documents</a></li>
-        <li><a href="./request">Notification</a></li>
+        <li><a href="./OfficeNotify">Notification</a></li>
         <li><a href="./OfficeAboutUs">About Us</a></li>
         <li><a href="./OfficeContactUs">Contact Us</a></li>
         <li><a href="./OfficeLogin">Profile</a></li>
