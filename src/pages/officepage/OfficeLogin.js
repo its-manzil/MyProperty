@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Ensure this is imported if you use React Router
-import axios from "axios"; // Ensure axios is installed and imported
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./officelogin.css";
 
 const OfficeLogin = () => {
@@ -13,7 +13,6 @@ const OfficeLogin = () => {
     const token = localStorage.getItem("officeToken");
     if (token) {
       navigate("/OfficeProfile");
-      return;
     }
     if (message) {
       const timer = setTimeout(() => {
@@ -32,10 +31,15 @@ const OfficeLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:8080/officeLogin", loginData);
-      localStorage.setItem("token", response.data.token);
-      navigate("/UserDashboard");
+
+      // Correctly save the token
+      localStorage.setItem("officeToken", response.data.officeToken);
+
+      setMessage("Login Successful");
+      navigate("/OfficeProfile"); // Navigate to profile page after successful login
     } catch (error) {
-      setMessage("Login failed: " + (error.response?.data || "Server error"));
+      const errorMsg = error.response?.data || "Server error";
+      setMessage(`Login failed: ${errorMsg}`);
     }
   };
 
@@ -78,9 +82,7 @@ const OfficeLogin = () => {
               required
             />
             <i
-              className={`fas ${
-                passwordVisible ? "fa-eye" : "fa-eye-slash"
-              } office-login-password-toggle`}
+              className={`fas ${passwordVisible ? "fa-eye" : "fa-eye-slash"} office-login-password-toggle`}
               onClick={togglePasswordVisibility}
             ></i>
           </div>

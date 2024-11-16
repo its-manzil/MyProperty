@@ -1,7 +1,16 @@
-import React from "react";
-import "./aboutus.css";
-import Navbar from "./userpage/Navbar";
-const AboutUs = () => {
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./useraboutus.css";
+import Navbar from "./Navbar";
+const UserAboutUs = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/UserLogin");
+      return;
+    }
+  }, [navigate]);
   return (
     <>
     <Navbar />
@@ -66,4 +75,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default UserAboutUs;

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { BrowserProvider, Contract } from "ethers";
 import React, { useState, useEffect } from "react";
 import LandRegistryABI from "./LandRegistryABI.json";
@@ -5,6 +6,13 @@ import "./officedocument.css";
 import OfficeNav from "./OfficeNav";
 
 function OfficeDocument() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const officeToken = localStorage.getItem("officeToken");
+    if (!officeToken) {
+      navigate("/OfficeLogin");
+      return;
+    }}, [navigate]);
   const [form, setForm] = useState({
     landNumber: "",
     landmark: "",
