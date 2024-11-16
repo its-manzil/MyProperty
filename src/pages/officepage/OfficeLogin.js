@@ -1,8 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Ensure this is imported if you use React Router
+import axios from "axios"; // Ensure axios is installed and imported
 import "./officelogin.css";
 
 const OfficeLogin = () => {
+  const [loginData, setLoginData] = useState({ phone_no: "", password: "" });
+  const [message, setMessage] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("officeToken");
+    if (token) {
+      navigate("/OfficeProfile");
+      return;
+    }
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage("");
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [navigate, message]);
+
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData({ ...loginData, [name]: value });
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:8080/officeLogin", loginData);
+      localStorage.setItem("token", response.data.token);
+      navigate("/UserDashboard");
+    } catch (error) {
+      setMessage("Login failed: " + (error.response?.data || "Server error"));
+    }
+  };
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -14,54 +49,61 @@ const OfficeLogin = () => {
         <img className="office-login-logo" src="logo.png" alt="Citizen Portal Logo" />
         <h2 className="office-login-title">CITIZEN PORTAL</h2>
 
-        {/* Mobile Number Input */}
-        <div className="office-login-input-group">
-          <i className="fas fa-phone-alt office-login-icon"></i>
-          <input
-            className="office-login-input"
-            type="text"
-            placeholder="Mobile Number"
-          />
-        </div>
+        {message && <div className="office-login-message">{message}</div>}
 
-        {/* Password Input */}
-        <div className="office-login-input-group office-login-password-group">
-          <input
-            className="office-login-input"
-            type={passwordVisible ? "text" : "password"}
-            placeholder="Password"
-          />
-          <i
-            className={`fas ${
-              passwordVisible ? "fa-eye" : "fa-eye-slash"
-            } office-login-password-toggle`}
-            onClick={togglePasswordVisibility}
-          ></i>
-        </div>
+        <form onSubmit={handleLoginSubmit}>
+          {/* Mobile Number Input */}
+          <div className="office-login-input-group">
+            <i className="fas fa-phone-alt office-login-icon"></i>
+            <input
+              className="office-login-input"
+              type="text"
+              name="phone_no"
+              value={loginData.phone_no}
+              onChange={handleLoginChange}
+              placeholder="Mobile Number"
+              required
+            />
+          </div>
 
-        {/* Show Password Checkbox */}
-        <div className="office-login-checkbox-group">
-          <input
-            className="office-login-checkbox"
-            type="checkbox"
-            id="showPassword"
-            checked={passwordVisible}
-            onChange={togglePasswordVisibility}
-          />
-          <label className="office-login-checkbox-label" htmlFor="showPassword">
-            Show Password
-          </label>
-        </div>
+          {/* Password Input */}
+          <div className="office-login-input-group office-login-password-group">
+            <input
+              className="office-login-input"
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              value={loginData.password}
+              onChange={handleLoginChange}
+              placeholder="Password"
+              required
+            />
+            <i
+              className={`fas ${
+                passwordVisible ? "fa-eye" : "fa-eye-slash"
+              } office-login-password-toggle`}
+              onClick={togglePasswordVisibility}
+            ></i>
+          </div>
 
-        {/* Forgot Password Link */}
-        <a href="#" className="office-login-forgot-password">
-          Forgot your password?
-        </a>
+          {/* Show Password Checkbox */}
+          <div className="office-login-checkbox-group">
+            <input
+              className="office-login-checkbox"
+              type="checkbox"
+              id="showPassword"
+              checked={passwordVisible}
+              onChange={togglePasswordVisibility}
+            />
+            <label className="office-login-checkbox-label" htmlFor="showPassword">
+              Show Password
+            </label>
+          </div>
 
-        {/* Login Button */}
-        <button className="office-login-button">
-          LOGIN <i className="fas fa-sign-in-alt office-login-button-icon"></i>
-        </button>
+          {/* Login Button */}
+          <button type="submit" className="office-login-button">
+            LOGIN <i className="fas fa-sign-in-alt office-login-button-icon"></i>
+          </button>
+        </form>
       </div>
     </div>
   );

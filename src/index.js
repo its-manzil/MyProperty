@@ -17,6 +17,7 @@ import OfficeDocument from "./pages/officepage/OfficeDocument";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import OfficeLogin from "./pages/officepage/OfficeLogin";
+import OfficeProfile from "./pages/officepage/OfficeProfile";
 const rootElement = document.getElementById("root");
 const root = ReactDOM.createRoot(rootElement);
 
@@ -40,6 +41,7 @@ root.render(
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="/OfficeLogin" element={<OfficeLogin />} />
+        <Route path="/OfficeProfile" element={<OfficeProfile />} />
       </Routes>
     </Router>
   </React.StrictMode>
