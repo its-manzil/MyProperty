@@ -50,8 +50,8 @@ const OfficeLogin = () => {
   return (
     <div className="office-login">
       <div className="office-login-container">
-        <img className="office-login-logo" src="logo.png" alt="Citizen Portal Logo" />
-        <h2 className="office-login-title">CITIZEN PORTAL</h2>
+        <img className="office-login-logo" src="https://www.shutterstock.com/image-vector/user-icon-vector-trendy-flat-600nw-1720665448.jpg" alt="Citizen Portal Logo" />
+        <h2 className="office-login-title">OFFICE PORTAL</h2>
 
         {message && <div className="office-login-message">{message}</div>}
 

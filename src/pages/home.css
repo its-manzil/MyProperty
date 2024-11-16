@@ -47,14 +47,20 @@ button:hover {
     color: #666;
     margin-bottom: 20px;
 }
+.select {
+    display: flex   ;
+    justify-content: center;
+    
+}
 
 .banner-content .select h2 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
+    padding-top: 20px;
 }
 
 .banner-content .select button {
-    margin: 5px;
+    margin: 10px;
+    
 }
 
 .banner-graphics img {
