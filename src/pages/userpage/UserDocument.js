@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Navbar from "./Navbar";
 import "./userdocument.css";
 
 const UserDocument = () => {
@@ -36,6 +37,8 @@ const UserDocument = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="app-container">
       <button
         className="unique-buy-button"
@@ -64,17 +67,17 @@ const UserDocument = () => {
             <legend>Transfer Property</legend>
             <form id="transferForm" onSubmit={handleFormSubmit}>
               <div className="form-row">
-                <label htmlFor="currentOwner">Current Owner:</label>
                 <input
                   type="text"
                   id="currentOwner"
                   name="currentOwner"
                   required
                   pattern="[A-Za-z\\s]+"
+                  placeholder="Current Owner"
                 />
               </div>
               <div className="form-row">
-                <label htmlFor="citznno">Current Owner Citizenship no:</label>
+                
                 <input
                   type="text"
                   id="citznno"
@@ -82,30 +85,30 @@ const UserDocument = () => {
                   required
                   pattern="\\d+"
                   title="Only numbers allowed"
+                  placeholder="Owner Citizenship no"
                 />
               </div>
               <div className="form-row">
-                <label htmlFor="currentAddress">Address:</label>
                 <input
                   type="text"
                   id="currentAddress"
                   name="currentAddress"
                   required
                   pattern="[A-Za-z\\s]+"
+                  placeholder="Address:"
                 />
               </div>
               <div className="form-row">
-                <label htmlFor="newOwner">Buyer Name:</label>
                 <input
                   type="text"
                   id="newOwner"
                   name="newOwner"
                   required
                   pattern="[A-Za-z\\s]+"
+                  placeholder="Buyer Name"
                 />
               </div>
               <div className="form-row">
-                <label htmlFor="newCitznno">Buyer Citizenship no:</label>
                 <input
                   type="text"
                   id="newCitznno"
@@ -113,20 +116,20 @@ const UserDocument = () => {
                   required
                   pattern="\\d+"
                   title="Only numbers allowed"
+                  placeholder="Buyer Citizenship no"
                 />
               </div>
               <div className="form-row">
-                <label htmlFor="newAddress">Address:</label>
                 <input
                   type="text"
                   id="newAddress"
                   name="newAddress"
                   required
                   pattern="[A-Za-z\\s]+"
+                  placeholder="Address:"
                 />
               </div>
               <div className="form-row">
-                <label htmlFor="landno">Land no:</label>
                 <input
                   type="text"
                   id="landno"
@@ -134,10 +137,10 @@ const UserDocument = () => {
                   required
                   pattern="\\d+"
                   title="Only numbers allowed"
+                  placeholder="Land no"
                 />
               </div>
               <div className="form-row">
-                <label htmlFor="landarea">Land Area:</label>
                 <input
                   type="text"
                   id="landarea"
@@ -145,12 +148,11 @@ const UserDocument = () => {
                   required
                   pattern="\\d+"
                   title="Only numbers allowed"
+                  placeholder="Land Area"
                 />
               </div>
               <div className="form-row">
-                <label htmlFor="taxclearance">
-                  Tax Clearance Invoice Number:
-                </label>
+                
                 <input
                   type="text"
                   id="taxclearance"
@@ -158,16 +160,17 @@ const UserDocument = () => {
                   required
                   pattern="\\d+"
                   title="Only numbers allowed"
+                  placeholder="Tax Clearance Invoice Number"
                 />
               </div>
               <div className="form-row">
-                <label htmlFor="location">Land Location:</label>
                 <input
                   type="text"
                   id="location"
                   name="location"
                   required
                   pattern="[A-Za-z\\s]+"
+                  placeholder="Land Location"
                 />
               </div>
               <div className="unique-image-container">
@@ -187,6 +190,7 @@ const UserDocument = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
