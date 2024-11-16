@@ -8,6 +8,14 @@ const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
 function UserDocument() {
   const navigate = useNavigate();
+
+  const [userData, setUserData] = useState({ ownerName: "", citizenshipNo: "" });
+  const [landRecords, setLandRecords] = useState([]);
+  const [contract, setContract] = useState(null);
+
+  const [buyData, setBuyData] = useState({ landNumber: "", sellerAddress: "" });
+  const [sellData, setSellData] = useState({ landNumber: "", buyerAddress: "" });
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -15,9 +23,6 @@ function UserDocument() {
       return;
     }
   }, [navigate]);
-  const [userData, setUserData] = useState({ ownerName: "", citizenshipNo: "" });
-  const [landRecords, setLandRecords] = useState([]);
-  const [contract, setContract] = useState(null);
 
   useEffect(() => {
     const initContract = async () => {
@@ -60,6 +65,40 @@ function UserDocument() {
     }
   };
 
+  // Buying land
+  const handleBuyChange = (e) => {
+    const { name, value } = e.target;
+    setBuyData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleBuySubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await contract.buyLand(buyData.landNumber, buyData.sellerAddress);
+      alert("Land purchase successful!");
+      fetchLandRecords(); // Refresh records
+    } catch (error) {
+      console.error("Error buying land:", error);
+    }
+  };
+
+  // Selling land
+  const handleSellChange = (e) => {
+    const { name, value } = e.target;
+    setSellData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSellSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await contract.sellLand(sellData.landNumber, sellData.buyerAddress);
+      alert("Land sale successful!");
+      fetchLandRecords(); // Refresh records
+    } catch (error) {
+      console.error("Error selling land:", error);
+    }
+  };
+
   return (
     <div>
       <h2>Land Records for {userData.ownerName}</h2>
@@ -75,6 +114,54 @@ function UserDocument() {
       ) : (
         <p>No land records found.</p>
       )}
+
+      {/* Buy Land Form */}
+      <h3>Buy Land</h3>
+      <form onSubmit={handleBuySubmit}>
+        <label>
+          Land Number:
+          <input
+            type="text"
+            name="landNumber"
+            value={buyData.landNumber}
+            onChange={handleBuyChange}
+          />
+        </label>
+        <label>
+          Seller Address:
+          <input
+            type="text"
+            name="sellerAddress"
+            value={buyData.sellerAddress}
+            onChange={handleBuyChange}
+          />
+        </label>
+        <button type="submit">Buy Land</button>
+      </form>
+
+      {/* Sell Land Form */}
+      <h3>Sell Land</h3>
+      <form onSubmit={handleSellSubmit}>
+        <label>
+          Land Number:
+          <input
+            type="text"
+            name="landNumber"
+            value={sellData.landNumber}
+            onChange={handleSellChange}
+          />
+        </label>
+        <label>
+          Buyer Address:
+          <input
+            type="text"
+            name="buyerAddress"
+            value={sellData.buyerAddress}
+            onChange={handleSellChange}
+          />
+        </label>
+        <button type="submit">Sell Land</button>
+      </form>
     </div>
   );
 }
