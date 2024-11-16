@@ -126,6 +126,7 @@ function UserDashboard() {
           <h2>Your Details</h2>
           {editDetails ? (
             <form onSubmit={handleDetailSubmit}>
+              
               <div className="dashboard-detail-item">
                 <label>Name: </label>
                 <input
@@ -204,17 +205,17 @@ function UserDashboard() {
           ) : (
             <>
               <div className="dashboard-detail-item">
-                <span>Name: {customerDetails.full_name}</span>
+                <span>Name    : {customerDetails.full_name}</span>
               </div>
               <div className="dashboard-detail-item">
-                <span>Email: {customerDetails.email}</span>
+                <span>Email   : {customerDetails.email}</span>
               </div>
               <div className="dashboard-detail-item">
-                <span>Phone: {customerDetails.phone_no}</span>
+                <span>Phone   : {customerDetails.phone_no}</span>
               </div>
               <div className="dashboard-detail-item">
                 <span>
-                  Address: {customerDetails.address}, {customerDetails.district}
+                  Address     :{customerDetails.address} {customerDetails.district}
                 </span>
               </div>
               <div className="dashboard-detail-item">

@@ -42,23 +42,24 @@ const OfficeProfile = () => {
         <div className="profile-pic">
           <HiMiniBuildingOffice2 size={50} />
         </div>
+        
 
         {/* Name */}
         <div className="profile-name">{officeDetails.office_name}</div>
 
         {/* Profile Details Section */}
         <div className="dashboard-detail-item">
-          <span>Office Name: {officeDetails.office_name}</span>
+          <span>Office Name    : {officeDetails.office_name}</span>
         </div>
         <div className="dashboard-detail-item">
-          <span>Office Email: {officeDetails.office_email}</span>
+          <span>Office Email   : {officeDetails.office_email}</span>
         </div>
         <div className="dashboard-detail-item">
-          <span>Office Phone: {officeDetails.office_mobile}</span>
+          <span>Office Phone   : {officeDetails.office_mobile}</span>
         </div>
         <div className="dashboard-detail-item">
           <span>
-            Office Address: {officeDetails.office_location}, {officeDetails.office_district}
+            Office Address     : {officeDetails.office_location}, {officeDetails.office_district}
           </span>
         </div>
         <div className="dashboard-detail-item">
