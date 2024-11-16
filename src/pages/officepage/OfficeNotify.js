@@ -1,105 +1,59 @@
 import React, { useState } from "react";
 import "./officenotify.css";
 import OfficeNav from "./OfficeNav";
+import { BrowserProvider, Contract } from "ethers";
 
 const OfficeNotify = () => {
-  const [modalData, setModalData] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transactions, setTransactions] = useState([
+    // Initial data could come from backend
+  ]);
 
-  const handleViewDetails = (rowData) => {
-    setModalData(rowData);
-    setIsModalOpen(true);
+  const handleAcceptTransaction = async (transaction) => {
+    if (window.ethereum) {
+      const provider = new BrowserProvider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const contractAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+      const abi = [
+        // Provide the ABI of your smart contract here
+      ];
+      const contract = new Contract(contractAddress, abi, signer);
+
+      try {
+        const tx = await contract.verifyAndSaveLand(
+          transaction.buyer,
+          transaction.landNo,
+          transaction.location
+        );
+        await tx.wait();
+        alert("Land verified and saved on the blockchain.");
+        setTransactions(transactions.filter((t) => t !== transaction));
+      } catch (error) {
+        console.error("Verification failed:", error);
+      }
+    } else {
+      alert("Ethereum wallet not found.");
+    }
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const transactions = [
-    {
-      buyer: "John Doe",
-      buyerContact: "123-456-7890",
-      seller: "Jane Smith",
-      sellerContact: "987-654-3210",
-      landType: "Residential",
-      landArea: "2000 sq ft",
-      price: "$250,000",
-    },
-    {
-      buyer: "Alice Johnson",
-      buyerContact: "234-567-8901",
-      seller: "Bob Brown",
-      sellerContact: "876-543-2109",
-      landType: "Commercial",
-      landArea: "1500 sq ft",
-      price: "$300,000",
-    },
-  ];
-
-  return (<>
-    <OfficeNav />
-    <div className="container">
-      <h2>Transaction Details</h2>
-      <div className="transactions">
-        {transactions.map((transaction, index) => (
-          <div className="transaction-item" key={index}>
-            <p>
-              <strong>Buyer:</strong> {transaction.buyer}
-            </p>
-            <p>
-              <strong>Seller:</strong> {transaction.seller}
-            </p>
-            <button
-              className="btn-view"
-              onClick={() => handleViewDetails(transaction)}
-            >
-              View Details
-            </button>
-          </div>
-        ))}
+  return (
+    <>
+      <OfficeNav />
+      <div className="container">
+        <h2>Transaction Details</h2>
+        {transactions.length > 0 ? (
+          transactions.map((transaction, index) => (
+            <div key={index} className="transaction-item">
+              <p><strong>Buyer:</strong> {transaction.buyer}</p>
+              <button onClick={() => handleAcceptTransaction(transaction)}>
+                Verify
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>No pending transactions.</p>
+        )}
       </div>
-
-      {isModalOpen && modalData && (
-        <div className="modal">
-          <div className="modal-content">
-            {/* Buyer Section */}
-            <div className="section">
-              <h3>Buyer Details</h3>
-              <p>
-                <strong>Name:</strong> {modalData.buyer}
-              </p>
-              <p>
-                <strong>Contact:</strong> {modalData.buyerContact}
-              </p>
-              <p>
-                <strong>Land Type:</strong> {modalData.landType}
-              </p>
-              <p>
-                <strong>Land Area:</strong> {modalData.landArea}
-              </p>
-            </div>
-
-            {/* Seller Section */}
-            <div className="section">
-              <h3>Seller Details</h3>
-              <p>
-                <strong>Name:</strong> {modalData.seller}
-              </p>
-              <p>
-                <strong>Contact:</strong> {modalData.sellerContact}
-              </p>
-            </div>
-
-            <button className="btn-accept" onClick={handleCloseModal}>
-              Accept
-            </button>
-            <button className="btn-reject" onClick={handleCloseModal}>
-              Reject
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
     </>
   );
 };

@@ -13,7 +13,7 @@ const Admin = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("admintoken");
-    if (!token) {
+    if (token) {
       navigate("/AdminLogin");
       return;
     }
