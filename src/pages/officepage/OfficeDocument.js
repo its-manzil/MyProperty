@@ -2,6 +2,10 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import "./officedocument.css";
 import OfficeNav from "./OfficeNav";
+import { BrowserProvider, Contract } from "ethers";
+import RegistryABI from "./RegistryABI.json";
+
+
 
 function OfficeDocument() {
   const navigate = useNavigate();
@@ -13,6 +17,9 @@ function OfficeDocument() {
     ownerName: "",
     citizenshipNo: "",
   });
+  const [contract, setContract] = useState(null);
+  const contractAddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"; 
+
 
   // Redirect to login if no token is found
   useEffect(() => {
@@ -23,6 +30,23 @@ function OfficeDocument() {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    if (window.ethereum) {
+      const initEthers = async () => {
+        const providerInstance = new BrowserProvider(window.ethereum);
+        await providerInstance.send("eth_requestAccounts", []);
+        
+        const signer = await providerInstance.getSigner();
+        const contractInstance = new Contract(contractAddress, RegistryABI, signer);
+        setContract(contractInstance);
+      };
+      initEthers();
+    } else {
+      alert("Please install MetaMask to use this feature!");
+    }
+  }, []);
+
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -32,7 +56,7 @@ function OfficeDocument() {
 
     const officeToken = localStorage.getItem("officeToken");
     if (!officeToken) {
-      alert("You are not authorized. Please log in.");
+      
       navigate("/OfficeLogin");
       return;
     }
@@ -62,7 +86,7 @@ function OfficeDocument() {
       });
 
       if (response.ok) {
-        alert("Property successfully added to the database!");
+        
         setForm({
           landNumber: "",
           landmark: "",
@@ -73,12 +97,26 @@ function OfficeDocument() {
         });
       } else {
         const error = await response.json();
-        alert(`Failed to add property: ${error.message}`);
+        
       }
     } catch (error) {
-      console.error("Error submitting property data:", error);
-      alert("An error occurred while submitting the form.");
+      console.error("");
+      
     }
+    if (!contract) return alert("Contract is not loaded.");
+
+    const { landNumber, landmark, area, landType, ownerName, citizenshipNo } = form;
+    try {
+      const tx = await contract.registerLand(landNumber, landmark, area, landType, ownerName, citizenshipNo);
+      console.log("Transaction details:", tx);
+      await tx.wait();
+      
+      
+    } catch (error) {
+      console.error("Transaction failed", error);
+      
+    }
+
   };
 
   return (
