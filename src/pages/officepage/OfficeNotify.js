@@ -3,104 +3,103 @@ import "./officenotify.css";
 import OfficeNav from "./OfficeNav";
 
 const OfficeNotify = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [currentDetails, setCurrentDetails] = useState({});
+  const [modalData, setModalData] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const viewDetails = (details) => {
-    setCurrentDetails(details);
-    setModalVisible(true);
+  const handleViewDetails = (rowData) => {
+    setModalData(rowData);
+    setIsModalOpen(true);
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
-  const data = [
+  const transactions = [
     {
-      buyerName: "John Doe",
+      buyer: "John Doe",
       buyerContact: "123-456-7890",
-      sellerName: "Jane Smith",
+      seller: "Jane Smith",
       sellerContact: "987-654-3210",
       landType: "Residential",
       landArea: "2000 sq ft",
       price: "$250,000",
     },
+    {
+      buyer: "Alice Johnson",
+      buyerContact: "234-567-8901",
+      seller: "Bob Brown",
+      sellerContact: "876-543-2109",
+      landType: "Commercial",
+      landArea: "1500 sq ft",
+      price: "$300,000",
+    },
   ];
 
-  return (
-    <>
-      <OfficeNav />
-      <div className="table-container">
-        <h2>Transaction Details</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Buyer Name</th>
-              <th>Seller Name</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={index}>
-                <td>{item.buyerName}</td>
-                <td>{item.sellerName}</td>
-                <td>
-                  <button
-                    className="btn-view"
-                    onClick={() => viewDetails(item)}
-                  >
-                    View Details
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        {modalVisible && (
-          <div
-            className="modal"
-            onKeyDown={(e) => e.key === "Escape" && closeModal()}
-            tabIndex="0"
-          >
-            <div className="modal-content">
-              <div className="section">
-                <h3>Buyer Details</h3>
-                <p>
-                  <strong>Name:</strong> {currentDetails.buyerName}
-                </p>
-                <p>
-                  <strong>Contact:</strong> {currentDetails.buyerContact}
-                </p>
-                <p>
-                  <strong>Land Type:</strong> {currentDetails.landType}
-                </p>
-                <p>
-                  <strong>Land Area:</strong> {currentDetails.landArea}
-                </p>
-              </div>
-              <div className="section">
-                <h3>Seller Details</h3>
-                <p>
-                  <strong>Name:</strong> {currentDetails.sellerName}
-                </p>
-                <p>
-                  <strong>Contact:</strong> {currentDetails.sellerContact}
-                </p>
-              </div>
-              <div className="modal-actions">
-                <button className="btn-accept" onClick={closeModal}>
-                  Accept
-                </button>
-                <button className="btn-reject" onClick={closeModal}>
-                  Reject
-                </button>
-              </div>
-            </div>
+  return (<>
+    <OfficeNav />
+    <div className="container">
+      <h2>Transaction Details</h2>
+      <div className="transactions">
+        {transactions.map((transaction, index) => (
+          <div className="transaction-item" key={index}>
+            <p>
+              <strong>Buyer:</strong> {transaction.buyer}
+            </p>
+            <p>
+              <strong>Seller:</strong> {transaction.seller}
+            </p>
+            <button
+              className="btn-view"
+              onClick={() => handleViewDetails(transaction)}
+            >
+              View Details
+            </button>
           </div>
-        )}
+        ))}
       </div>
+
+      {isModalOpen && modalData && (
+        <div className="modal">
+          <div className="modal-content">
+            {/* Buyer Section */}
+            <div className="section">
+              <h3>Buyer Details</h3>
+              <p>
+                <strong>Name:</strong> {modalData.buyer}
+              </p>
+              <p>
+                <strong>Contact:</strong> {modalData.buyerContact}
+              </p>
+              <p>
+                <strong>Land Type:</strong> {modalData.landType}
+              </p>
+              <p>
+                <strong>Land Area:</strong> {modalData.landArea}
+              </p>
+            </div>
+
+            {/* Seller Section */}
+            <div className="section">
+              <h3>Seller Details</h3>
+              <p>
+                <strong>Name:</strong> {modalData.seller}
+              </p>
+              <p>
+                <strong>Contact:</strong> {modalData.sellerContact}
+              </p>
+            </div>
+
+            <button className="btn-accept" onClick={handleCloseModal}>
+              Accept
+            </button>
+            <button className="btn-reject" onClick={handleCloseModal}>
+              Reject
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
     </>
   );
 };
