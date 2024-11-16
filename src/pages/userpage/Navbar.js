@@ -19,8 +19,8 @@ function Navbar() {
         <li><a href="./UserHome">Home</a></li>
         <li><a href="./UserDocument">Documents</a></li>
         <li><a href="./UserNotifications">Notification</a></li>
-        <li><a href="./AboutUs">About Us</a></li>
-        <li><a href="./ContactUs">Contact Us</a></li>
+        <li><a href="./UserAboutUs">About Us</a></li>
+        <li><a href="./UserContactUs">Contact Us</a></li>
         <li><a href="./UserLogin">Profile</a></li>
       </ul>
     </nav>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import bcrypt from 'bcryptjs';
 import './admin.css';
 
 const Admin = () => {
@@ -17,43 +18,43 @@ const Admin = () => {
         office_email: '',
         office_location: '',
         office_district: '',
-        password_hash: '',
+        password_hash: '', // Will store hashed password
     });
 
     const [password, setPassword] = useState({ new: '', confirm: '' });
 
-const handlePasswordChange = async (event) => {
-    event.preventDefault();
+    const handlePasswordChange = async (event) => {
+        event.preventDefault();
 
-    if (!password.new || !password.confirm) {
-        alert("Please fill in both password fields.");
-        return;
-    }
+        if (!password.new || !password.confirm) {
+            alert("Please fill in both password fields.");
+            return;
+        }
 
-    if (password.new !== password.confirm) {
-        alert("New password and confirmation do not match.");
-        return;
-    }
+        if (password.new !== password.confirm) {
+            alert("New password and confirmation do not match.");
+            return;
+        }
 
-    try {
-        const response = await axios.post(
-            'http://localhost:8080/changeAdminPassword',
-            { newPassword: password.new },
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("adminToken")}`
+        try {
+            const response = await axios.post(
+                'http://localhost:8080/changeAdminPassword',
+                { newPassword: password.new },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+                    },
                 }
-            }
-        );
-        alert(response.data || "Password changed successfully!");
-        setPassword({ new: '', confirm: '' }); // Clear form after success
-    } catch (error) {
-        console.error("Error changing password:", error);
-        const errorMessage =
-            error.response?.data || "An error occurred. Please try again.";
-        alert(errorMessage);
-    }
-};
+            );
+            alert(response.data || "Password changed successfully!");
+            setPassword({ new: '', confirm: '' }); // Clear form after success
+        } catch (error) {
+            console.error("Error changing password:", error);
+            const errorMessage =
+                error.response?.data || "An error occurred. Please try again.";
+            alert(errorMessage);
+        }
+    };
 
     useEffect(() => {
         fetchOfficers();
@@ -81,29 +82,45 @@ const handlePasswordChange = async (event) => {
         setShowOfficerForm(true);
     };
 
-    const handleOfficerInputChange = (e) => {
+    const handleOfficerInputChange = async (e) => {
         const { name, value } = e.target;
-        setNewOfficer((prevState) => ({
-            ...prevState,
-            [name]: value
-        }));
+
+        if (name === 'password_hash') {
+            // Hash the password before setting it in the state
+            const hashedPassword = await bcrypt.hash(value, 10);
+            setNewOfficer((prevState) => ({
+                ...prevState,
+                password_hash: hashedPassword,
+            }));
+        } else {
+            setNewOfficer((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
     };
 
     const handleOfficerSubmit = async (event) => {
         event.preventDefault();
-        const response = await fetch('http://localhost:8080/addOfficer', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newOfficer),
-        });
-        if (response.ok) {
-            alert('Officer added successfully');
-            fetchOfficers(); // Fetch updated list of officers
-            setShowOfficerForm(false);
-        } else {
-            alert('Error adding officer');
+
+        try {
+            const response = await fetch('http://localhost:8080/addOfficer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newOfficer),
+            });
+
+            if (response.ok) {
+                alert('Officer added successfully');
+                fetchOfficers(); // Fetch updated list of officers
+                setShowOfficerForm(false);
+            } else {
+                alert('Error adding officer');
+            }
+        } catch (error) {
+            console.error('Error submitting officer:', error);
         }
     };
 
@@ -229,23 +246,22 @@ const handlePasswordChange = async (event) => {
                     <div className="settings-panel">
                         <h2>Change Password</h2>
                         <form onSubmit={handlePasswordChange}>
-    <input
-        type="password"
-        placeholder="New Password"
-        required
-        value={password.new}
-        onChange={(e) => setPassword({ ...password, new: e.target.value })}
-    />
-    <input
-        type="password"
-        placeholder="Confirm New Password"
-        required
-        value={password.confirm}
-        onChange={(e) => setPassword({ ...password, confirm: e.target.value })}
-    />
-    <button type="submit">Submit</button>
-</form>
-
+                            <input
+                                type="password"
+                                placeholder="New Password"
+                                required
+                                value={password.new}
+                                onChange={(e) => setPassword({ ...password, new: e.target.value })}
+                            />
+                            <input
+                                type="password"
+                                placeholder="Confirm Password"
+                                required
+                                value={password.confirm}
+                                onChange={(e) => setPassword({ ...password, confirm: e.target.value })}
+                            />
+                            <button type="submit">Change Password</button>
+                        </form>
                     </div>
                 )}
             </div>

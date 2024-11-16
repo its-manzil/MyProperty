@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { BrowserProvider, Contract } from "ethers";
 import LandRegistryABI from "./LandRegistryABI.json";
@@ -6,6 +7,14 @@ import axios from "axios";
 const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
 function UserDocument() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/UserLogin");
+      return;
+    }
+  }, [navigate]);
   const [userData, setUserData] = useState({ ownerName: "", citizenshipNo: "" });
   const [landRecords, setLandRecords] = useState([]);
   const [contract, setContract] = useState(null);

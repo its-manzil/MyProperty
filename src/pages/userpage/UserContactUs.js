@@ -1,9 +1,18 @@
-import React, { useRef, useState } from "react";
-import Navbar from "./userpage/Navbar";
+import { useNavigate } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import Navbar from "./Navbar";
 import emailjs from "@emailjs/browser";
-import "./contactus.css";
+import "./usercontactus.css";
 
-const ContactUs = () => {
+const UserContactUs = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/UserLogin");
+      return;
+    }
+  }, [navigate]);
   const form = useRef();
   const [submitMessage, setSubmitMessage] = useState("");
 
@@ -57,4 +66,4 @@ const ContactUs = () => {
   );
 };
 
-export default ContactUs;
+export default UserContactUs;

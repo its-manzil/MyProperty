@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./usernotifications.css";
 import Navbar from "./Navbar";
 
 const UserNotifications = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/UserLogin");
+      return;
+    }
+  }, [navigate]);
   const [activeSection, setActiveSection] = useState("brought");
 
   const showSection = (section) => {
