@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { BrowserProvider, Contract } from "ethers";
 import React, { useState, useEffect } from "react";
-import LandRegistryABI from "./LandRegistryABI.json";
+// import LandRegistryABI from "./LandRegistryABI.json";
+import RegistryABI from "./RegistryABI.json";
 import "./officedocument.css";
 import OfficeNav from "./OfficeNav";
 
@@ -23,7 +24,7 @@ function OfficeDocument() {
   });
 
   const [contract, setContract] = useState(null);
-  const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"; 
+  const contractAddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"; 
 
   useEffect(() => {
     if (window.ethereum) {
@@ -32,7 +33,7 @@ function OfficeDocument() {
         await providerInstance.send("eth_requestAccounts", []);
         
         const signer = await providerInstance.getSigner();
-        const contractInstance = new Contract(contractAddress, LandRegistryABI, signer);
+        const contractInstance = new Contract(contractAddress, RegistryABI, signer);
         setContract(contractInstance);
       };
       initEthers();

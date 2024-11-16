@@ -2,37 +2,12 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_landNumber",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_landmark",
-        "type": "string"
-      },
-      {
         "internalType": "uint256",
-        "name": "_area",
+        "name": "landId",
         "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "_landType",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_ownerName",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_citizenshipNo",
-        "type": "string"
       }
     ],
-    "name": "createLandRecord",
+    "name": "approveTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -41,11 +16,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_landId",
+        "name": "landId",
         "type": "uint256"
       }
     ],
-    "name": "getLandRecord",
+    "name": "getLandDetails",
     "outputs": [
       {
         "components": [
@@ -56,17 +31,12 @@
           },
           {
             "internalType": "string",
-            "name": "landNumber",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "landmark",
+            "name": "landLocation",
             "type": "string"
           },
           {
             "internalType": "uint256",
-            "name": "area",
+            "name": "landArea",
             "type": "uint256"
           },
           {
@@ -75,17 +45,22 @@
             "type": "string"
           },
           {
-            "internalType": "string",
-            "name": "ownerName",
-            "type": "string"
+            "internalType": "address",
+            "name": "currentOwner",
+            "type": "address"
           },
           {
-            "internalType": "string",
-            "name": "citizenshipNo",
-            "type": "string"
+            "internalType": "bool",
+            "name": "isVerified",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isTransferred",
+            "type": "bool"
           }
         ],
-        "internalType": "struct LandRegistry.LandRecord",
+        "internalType": "struct LandRegistry.Land",
         "name": "",
         "type": "tuple"
       }
@@ -96,17 +71,12 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_ownerName",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_citizenshipNo",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "landId",
+        "type": "uint256"
       }
     ],
-    "name": "getLandRecordsByOwner",
+    "name": "getTransferRequestDetails",
     "outputs": [
       {
         "components": [
@@ -116,39 +86,24 @@
             "type": "uint256"
           },
           {
-            "internalType": "string",
-            "name": "landNumber",
-            "type": "string"
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
           },
           {
-            "internalType": "string",
-            "name": "landmark",
-            "type": "string"
+            "internalType": "bool",
+            "name": "isPending",
+            "type": "bool"
           },
           {
-            "internalType": "uint256",
-            "name": "area",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "landType",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "ownerName",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "citizenshipNo",
-            "type": "string"
+            "internalType": "bool",
+            "name": "isApproved",
+            "type": "bool"
           }
         ],
-        "internalType": "struct LandRegistry.LandRecord[]",
+        "internalType": "struct LandRegistry.TransferRequest",
         "name": "",
-        "type": "tuple[]"
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -162,7 +117,7 @@
         "type": "uint256"
       }
     ],
-    "name": "landRecords",
+    "name": "lands",
     "outputs": [
       {
         "internalType": "uint256",
@@ -171,17 +126,12 @@
       },
       {
         "internalType": "string",
-        "name": "landNumber",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "landmark",
+        "name": "landLocation",
         "type": "string"
       },
       {
         "internalType": "uint256",
-        "name": "area",
+        "name": "landArea",
         "type": "uint256"
       },
       {
@@ -190,14 +140,19 @@
         "type": "string"
       },
       {
-        "internalType": "string",
-        "name": "ownerName",
-        "type": "string"
+        "internalType": "address",
+        "name": "currentOwner",
+        "type": "address"
       },
       {
-        "internalType": "string",
-        "name": "citizenshipNo",
-        "type": "string"
+        "internalType": "bool",
+        "name": "isVerified",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "isTransferred",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -205,7 +160,7 @@
   },
   {
     "inputs": [],
-    "name": "recordCount",
+    "name": "nextLandId",
     "outputs": [
       {
         "internalType": "uint256",
@@ -215,5 +170,129 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "officer",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_landLocation",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_landArea",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_landType",
+        "type": "string"
+      }
+    ],
+    "name": "registerLand",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "landId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "requestTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "transferRequests",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "landId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isPending",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "isApproved",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "buyer",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "landId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "location",
+        "type": "string"
+      }
+    ],
+    "name": "verifyAndSaveLand",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "landId",
+        "type": "uint256"
+      }
+    ],
+    "name": "verifyLand",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
-]
+  ]

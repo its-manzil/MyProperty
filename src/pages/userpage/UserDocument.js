@@ -5,13 +5,13 @@ import { BrowserProvider, Contract } from "ethers";
 
 const UserDocument = () => {
   const [currentSection, setCurrentSection] = useState("home");
-  const [transactionStatus, setTransactionStatus] = useState("pending"); // Track transaction status
+  const [transactionStatus, setTransactionStatus] = useState("pending");
   const [buyerData, setBuyerData] = useState(null);
 
   const profileData = {
-    landLocation: "Kathmandu, Nepal",
-    landArea: "500 sq.ft.",
-    landType: "Residential",
+    landLocation: "",
+    landArea: "",
+    landType: "",
   };
 
   useEffect(() => {

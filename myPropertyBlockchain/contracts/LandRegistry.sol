@@ -4,9 +4,12 @@ pragma solidity ^0.8.0;
 contract LandRegistry {
     struct Land {
         uint256 landId;
+        uint256 landNo;
         string landLocation;
         uint256 landArea;
         string landType;
+        string ownerName;
+        string citizenshipNo;
         address currentOwner;
         bool isVerified;
         bool isTransferred;
@@ -43,16 +46,27 @@ contract LandRegistry {
         officer = msg.sender;
     }
 
-    function registerLand(string memory _landLocation, uint256 _landArea, string memory _landType) public {
+    function registerLand(
+        uint256 _landNo,
+        string memory _landLocation,
+        uint256 _landArea,
+        string memory _landType,
+        string memory _ownerName,
+        string memory _citizenshipNo
+    ) public {
         lands[nextLandId] = Land({
             landId: nextLandId,
+            landNo: _landNo,
             landLocation: _landLocation,
             landArea: _landArea,
             landType: _landType,
+            ownerName: _ownerName,
+            citizenshipNo: _citizenshipNo,
             currentOwner: msg.sender,
             isVerified: false,
             isTransferred: false
         });
+
         emit LandRegistered(nextLandId, msg.sender, _landLocation);
         nextLandId++;
     }
