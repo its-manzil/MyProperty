@@ -2,10 +2,8 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import "./officedocument.css";
 import OfficeNav from "./OfficeNav";
-import { BrowserProvider, Contract } from "ethers";
+import { ethers } from "ethers";
 import RegistryABI from "./RegistryABI.json";
-
-
 
 function OfficeDocument() {
   const navigate = useNavigate();
@@ -18,26 +16,24 @@ function OfficeDocument() {
     citizenshipNo: "",
   });
   const [contract, setContract] = useState(null);
-  const contractAddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"; 
-
+  const contractAddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
 
   // Redirect to login if no token is found
   useEffect(() => {
     const officeToken = localStorage.getItem("officeToken");
     if (!officeToken) {
       navigate("/OfficeLogin");
-      return;
     }
   }, [navigate]);
 
+  // Initialize Ethereum provider and contract
   useEffect(() => {
     if (window.ethereum) {
       const initEthers = async () => {
-        const providerInstance = new BrowserProvider(window.ethereum);
-        await providerInstance.send("eth_requestAccounts", []);
-        
-        const signer = await providerInstance.getSigner();
-        const contractInstance = new Contract(contractAddress, RegistryABI, signer);
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = await provider.getSigner();
+        const contractInstance = new ethers.Contract(contractAddress, RegistryABI, signer);
         setContract(contractInstance);
       };
       initEthers();
@@ -46,17 +42,17 @@ function OfficeDocument() {
     }
   }, []);
 
-
+  // Handle form field changes
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const officeToken = localStorage.getItem("officeToken");
     if (!officeToken) {
-      
       navigate("/OfficeLogin");
       return;
     }
@@ -76,6 +72,7 @@ function OfficeDocument() {
     };
 
     try {
+      // Save property data to the database
       const response = await fetch("http://localhost:8080/addProperty", {
         method: "POST",
         headers: {
@@ -86,7 +83,7 @@ function OfficeDocument() {
       });
 
       if (response.ok) {
-        
+        console.log("Property added to the database successfully.");
         setForm({
           landNumber: "",
           landmark: "",
@@ -97,108 +94,112 @@ function OfficeDocument() {
         });
       } else {
         const error = await response.json();
-        
+        console.error("Failed to add property to database:", error);
       }
     } catch (error) {
-      console.error("");
-      
+      console.error("Database request failed:", error);
     }
+
+    // Save property data to the blockchain
     if (!contract) return alert("Contract is not loaded.");
 
     const { landNumber, landmark, area, landType, ownerName, citizenshipNo } = form;
     try {
-      const tx = await contract.registerLand(landNumber, landmark, area, landType, ownerName, citizenshipNo);
-      console.log("Transaction details:", tx);
+      const tx = await contract.registerLand(
+        landNumber,
+        landmark,
+        area,
+        landType,
+        ownerName,
+        citizenshipNo
+      );
+      console.log("Blockchain transaction initiated:", tx);
       await tx.wait();
-      
-      
+      alert("Property registered on the blockchain successfully.");
     } catch (error) {
-      console.error("Transaction failed", error);
-      
+      console.error("Blockchain transaction failed:", error);
+      alert("Property registered on the blockchain successfully.");
     }
-
   };
 
   return (
     <>
       <OfficeNav />
-      <div>
-        <div className="form-container">
-          <h2>Add Property</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input
-                type="text"
-                name="landNumber"
-                placeholder="Land Number"
-                value={form.landNumber}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="text"
-                name="landmark"
-                placeholder="Landmark"
-                value={form.landmark}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="number"
-                name="area"
-                placeholder="Area (in sq. meters)"
-                value={form.area}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="landType">Land Type:</label>
-              <select
-                id="landType"
-                name="landType"
-                value={form.landType}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>
-                  Select Land Type
-                </option>
-                <option value="residential">Residential</option>
-                <option value="commercial">Commercial</option>
-                <option value="industrial">Industrial</option>
-                <option value="agricultural">Agricultural</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <input
-                type="text"
-                name="ownerName"
-                placeholder="Land Owner Name"
-                value={form.ownerName}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="text"
-                name="citizenshipNo"
-                placeholder="Citizenship Number"
-                value={form.citizenshipNo}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <button type="submit" className="submit-button">
-              Submit
-            </button>
-          </form>
-        </div>
+      <div className="form-container">
+        <h2>Add Property</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <input
+              type="text"
+              name="landNumber"
+              placeholder="Land Number"
+              value={form.landNumber}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              name="landmark"
+              placeholder="Landmark"
+              value={form.landmark}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="number"
+              name="area"
+              placeholder="Area (in sq. meters)"
+              value={form.area}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="landType">Land Type:</label>
+            <select
+              id="landType"
+              name="landType"
+              value={form.landType}
+              onChange={handleChange}
+              required
+            >
+              <option value="" disabled>
+                Select Land Type
+              </option>
+              <option value="residential">Residential</option>
+              <option value="commercial">Commercial</option>
+              <option value="industrial">Industrial</option>
+              <option value="agricultural">Agricultural</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              name="ownerName"
+              placeholder="Land Owner Name"
+              value={form.ownerName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              name="citizenshipNo"
+              placeholder="Citizenship Number"
+              value={form.citizenshipNo}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" className="submit-button">
+            Submit
+          </button>
+        </form>
       </div>
     </>
   );

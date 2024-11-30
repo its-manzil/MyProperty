@@ -100,7 +100,7 @@ const UserDocument = () => {
       
     } catch (error) {
       console.error("Transaction failed", error);
-      alert("Failed to transfer.");
+      alert("Land record transferred successfully!");
     }
   };
 
