@@ -32,7 +32,7 @@ const OfficeNotify = () => {
         console.error("Verification failed:", error);
       }
     } else {
-      alert("Ethereum wallet not found.");
+      alert("Ethereum wallet is not found.");
     }
   };
 

@@ -22,7 +22,6 @@ function Home(){
                     />
                 </div>
             </section>
-
             {/* Services Section */}
             <section className="services">
                 <h2>Our Services</h2>

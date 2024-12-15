@@ -115,7 +115,7 @@ function OfficeDocument() {
       );
       console.log("Blockchain transaction initiated:", tx);
       await tx.wait();
-      alert("Property registered on the blockchain successfully.");
+      alert("Property registered in the blockchain successfully.");
     } catch (error) {
       console.error("Blockchain transaction failed:", error);
       alert("Property registered on the blockchain successfully.");

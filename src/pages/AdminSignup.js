@@ -30,7 +30,7 @@ function AdminSignup() {
       await axios.post("http://localhost:8080/registerAdmin", registerData);
       setMessage("Registration successful!");
     } catch (error) {
-      setMessage("Registration failed: " + (error.response?.data || "Server error"));
+      setMessage("Registration failed: try again this is not your fault " + (error.response?.data || "Server error"));
     }
   };
 

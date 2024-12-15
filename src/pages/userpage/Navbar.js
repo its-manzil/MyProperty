@@ -16,12 +16,12 @@ function Navbar() {
         {isOpen ? <FiX /> : <FiAlignJustify />}
       </div>
       <ul className={`nav-links ${isOpen ? "open" : ""}`}>
-        <li><a href="./UserHome">Home</a></li>
+        <li><a href="./UserHome">Homes</a></li>
         <li><a href="./UserDocument">Documents</a></li>
-        <li><a href="./UserNotifications">Notification</a></li>
-        <li><a href="./UserAboutUs">About Us</a></li>
-        <li><a href="./UserContactUs">Contact Us</a></li>
-        <li><a href="./UserLogin">Profile</a></li>
+        <li><a href="./UserNotifications">Notifications</a></li>
+        <li><a href="./UserAboutUs">About Uss</a></li>
+        <li><a href="./UserContactUs">Contact Us when necessary</a></li>
+        <li><a href="./UserLogin">Profiles</a></li>
       </ul>
     </nav>
   );

@@ -66,7 +66,7 @@ const OfficeHome = () => {
           </div>
         </div>
         <footer>
-          <p>&copy; 2024 Services App. All Rights Reserved.</p>
+          <p>&copy; 2024 Services App. All Rights Reserves.</p>
         </footer>
       </section>
     </div>
