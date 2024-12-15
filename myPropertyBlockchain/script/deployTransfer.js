@@ -18,7 +18,7 @@ async function main() {
   if (address) {
     console.log("contract deployed to:", address);
   } else {
-    console.log(" Transfer contract deployed.");
+    console.log(" Transfer contract deployed sucessfully.");
   }
 }
 
