@@ -18,7 +18,7 @@ async function main() {
   if (address) {
     console.log("LandRegistry deployed to:", address);
   } else {
-    console.log(" LandRegistry contract deployed sucessfully.");
+    console.log(" LandRegistry deployed sucessfully.");
   }
 }
 
