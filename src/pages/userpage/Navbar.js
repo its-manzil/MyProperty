@@ -21,7 +21,7 @@ function Navbar() {
         <li><a href="./UserNotifications">Notification</a></li>
         <li><a href="./UserAboutUs">About Uss</a></li>
         <li><a href="./UserContactUs">Contact Us</a></li>
-        <li><a href="./UserLogin">Profile</a></li>
+        <li><a href="./UserLogin">Profiles</a></li>
       </ul>
     </nav>
   );

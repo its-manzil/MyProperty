@@ -6,7 +6,7 @@ export default function Empty() {
         <>
             <Navbar />
             <div className="empty">
-                <h1>This page is empty</h1>
+                <h1>This is empty page</h1>
             </div>
         </>
     );
